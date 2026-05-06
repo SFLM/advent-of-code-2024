@@ -5,12 +5,13 @@ def main():
         raw = f.read().split()
     
     solution1(raw)
+    solution2(raw)
 
 def solution1(input):
     find_xmas(input)
 
 def solution2(input):
-    print()
+    find_x_mas(input)
 
 def find_xmas(input_map):
     total = 0
@@ -43,6 +44,15 @@ def find_xmas_diagonal(input_map):
                 if first_letter + last_three_letters in ("XMAS", "SAMX"):
                     total += 1
     return total
+
+def find_x_mas(input_map):
+    total = 0
+    for row_number in range(len(input_map)-2):
+        for letter_number in range(len(input_map[0])-2):
+            if input_map[row_number+1][letter_number+1] == 'A':
+                if (input_map[row_number][letter_number] + input_map[row_number][letter_number+2] + input_map[row_number+2][letter_number] + input_map[row_number+2][letter_number+2]) in ("MMSS", "MSMS", "SSMM", "SMSM"):
+                    total += 1
+    print(total)
 
 
 if __name__ == "__main__":
