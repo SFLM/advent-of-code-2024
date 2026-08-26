@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 def main():
     with open("input.txt") as f:
         raw = f.read().splitlines()
@@ -11,14 +13,21 @@ def solution1(input):
     topographic_map = [tuple([int(height) for height in line]) for line in input]
     for trailhead_location in get_trailheads(topographic_map):
         trailhead_row, trailhead_column = trailhead_location
-        trailhead_set = trailhead_solver(topographic_map, trailhead_row, trailhead_column, set())
-        if trailhead_set != None:
-            result += len(trailhead_set)
+        trailhead_findings = trailhead_solver(topographic_map, trailhead_row, trailhead_column, defaultdict(int))
+        if trailhead_findings != None:
+            result += len(trailhead_findings)
     print(f"Solution 1: {result}")
 
 
-def solution2(topographic_map):
-    print()
+def solution2(input):
+    result = 0
+    topographic_map = [tuple([int(height) for height in line]) for line in input]
+    for trailhead_location in get_trailheads(topographic_map):
+        trailhead_row, trailhead_column = trailhead_location
+        trailhead_findings = trailhead_solver(topographic_map, trailhead_row, trailhead_column, defaultdict(int))
+        if trailhead_findings != None:
+            result += sum(list(trailhead_findings.values()))
+    print(f"Solution 2: {result}")
 
 
 def get_trailheads(topographic_map):
@@ -39,7 +48,7 @@ def trailhead_solver(topographic_map, row, column, found, last_value=-1):
     if value != last_value+1:
         return
     if value == 9:
-        found.add((row,column))
+        found[(row,column)]+=1
         return
     
     trailhead_solver(topographic_map, row, column-1, found, value)
